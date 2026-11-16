@@ -1,0 +1,35 @@
+:root{--ink:#151318;--lime:#C5E829;--cream:#F4F0EA;--cream2:#EDE7DE;--muted:#6C6770;--line:#E3DDD2;--white:#fff}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--cream);line-height:1.55;font-size:17px}
+a{color:var(--ink)}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+header{background:var(--ink);color:var(--white)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:16px;padding-bottom:16px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.02em;color:var(--white);text-decoration:none}
+.logo span{color:var(--lime)}
+nav a{color:var(--white);text-decoration:none;margin-left:18px;font-weight:600;font-size:15px}
+nav a:first-child{margin-left:0}
+nav a[aria-current=page]{color:var(--lime)}
+.hero{background:var(--ink);color:var(--white);padding:48px 0 64px}
+.hero h1{font-size:clamp(34px,7vw,56px);line-height:1.05;margin:0 0 16px;letter-spacing:-.03em}
+.hero h1 em{font-style:normal;color:var(--lime)}
+.hero p{font-size:19px;max-width:560px;color:#d9d6dc;margin:0 0 24px}
+.pill{display:inline-block;background:var(--lime);color:var(--ink);font-weight:800;padding:12px 20px;border-radius:999px;text-decoration:none}
+.note{display:block;margin-top:12px;font-size:14px;color:#a7a2ac}
+main{padding:40px 0 56px}
+h2{font-size:28px;letter-spacing:-.02em;margin:40px 0 12px}
+h2:first-child{margin-top:0}
+h3{font-size:19px;margin:0 0 6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:16px}
+.card{background:var(--white);border-radius:18px;padding:18px 20px;border:1px solid var(--line)}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.band{background:var(--white);border-radius:22px;padding:24px;border:1px solid var(--line);margin-top:28px}
+.band strong{background:var(--lime);padding:0 4px}
+table{width:100%;border-collapse:collapse;background:var(--white);border-radius:14px;overflow:hidden;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--cream2)}
+.doc h2{font-size:22px;margin-top:32px}
+.small{color:var(--muted);font-size:14px}
+footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);font-size:14px}
+footer a{margin-right:16px}
+@media (max-width:520px){nav a{margin-left:12px;font-size:14px}.hero{padding:32px 0 44px}}
