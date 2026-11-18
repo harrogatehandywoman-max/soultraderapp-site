@@ -10,17 +10,41 @@
 <body>
 <header><div class="wrap"><a class="logo" href="index.html">Soul<span>Trader</span></a><nav><a href="index.html">Home</a><a href="whos-it-for.html">Who's it for</a><a href="tutorials.html" aria-current=page>Tutorials</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a></nav></div></header>
 
-<main><div class="wrap">
-<h2>Tutorials</h2>
-<p>Short videos showing real jobs, start to finish. Each one takes a couple of minutes.</p>
-<div class="grid">
-<div class="card"><h3>Book your first job</h3><p>Coming soon.</p></div>
-<div class="card"><h3>Bill on the doorstep</h3><p>Coming soon.</p></div>
-<div class="card"><h3>Never lose a rural address</h3><p>Coming soon.</p></div>
-<div class="card"><h3>What's in the van?</h3><p>Coming soon.</p></div>
+<main class="tuts">
+<div class="wrap"><h2>Tutorials</h2>
+<p>Short screen recordings of the app, one job at a time.</p></div>
+
+<section class="tut" id="book-a-job"><div class="wrap tut-row">
+<div class="tut-text">
+<h3>Book a Job</h3>
+<ol class="cues">
+<li data-at="0">Type their name and address. Pin where you're standing, or search the house on Maps and paste the link.</li>
+<li data-at="12.5">Tick how they contact you, so you can easily find them.</li>
+<li data-at="15.5">Describe each task and add the materials it needs. They go on your shopping list.</li>
+<li data-at="32">Book it in, or just save the job.</li>
+<li data-at="39">Your materials are here.</li>
+</ol>
 </div>
-<p class="small" style="margin-top:20px">Want a video on something in particular? <a href="support.html">Tell me</a>.</p>
-</div></main>
+<div class="phone"><video src="videos/book-a-job.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
+</div></section>
+
+
+
+<div class="wrap"><p class="small" style="margin:28px 0">Want a video on something in particular? <a href="support.html">Tell me</a>.</p></div>
+</main>
 <footer><div class="wrap"><a href="privacy.html">Privacy</a><a href="support.html">Support</a><br><br>&copy; 2026 SoulTrader &middot; Made in Harrogate, UK</div></footer>
+<script>
+// Highlight the line that matches what's happening in the recording.
+document.querySelectorAll('.tut').forEach(function (sec) {
+  var v = sec.querySelector('video'); var items = sec.querySelectorAll('.cues li');
+  if (!v || !items.length) return;
+  function tick() {
+    var t = v.currentTime, on = 0;
+    items.forEach(function (li, i) { if (t >= parseFloat(li.dataset.at)) on = i; });
+    items.forEach(function (li, i) { li.classList.toggle('on', i === on); });
+  }
+  v.addEventListener('timeupdate', tick); tick();
+});
+</script>
 </body>
 </html>
