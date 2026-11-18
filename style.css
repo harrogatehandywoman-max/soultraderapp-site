@@ -78,8 +78,8 @@ a.soon:hover{background:rgba(197,232,41,.12)}
 .tut ol{margin:0;padding-left:22px}
 .tut li{margin:8px 0;color:rgba(255,255,255,.85)}
 .tut b{color:var(--lime);font-weight:700}
-.phone{position:relative;flex:0 0 260px;aspect-ratio:1206/2452;border-radius:26px;border:8px solid #2a272e;background:#000;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5)}
-.phone video{width:100%;height:100%;object-fit:contain;display:block;position:relative;z-index:1}
+.phone{position:relative;flex:0 0 280px;width:280px}
+.phone video{width:100%;height:auto;display:block;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
 .phone-soon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--lime);font-size:14px;font-weight:700;text-align:center;padding:20px}
 @media (max-width:700px){.tut-row{flex-direction:column}.phone{flex-basis:auto;width:240px}}
 .cues{list-style:none;padding-left:0 !important}
