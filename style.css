@@ -65,3 +65,17 @@ body.landing{background:var(--ink);color:var(--white);min-height:100vh;display:f
 .ask p{color:#d9d6dc;margin:0 0 16px}
 @media (max-width:560px){.band-links .row{gap:10px 16px}.band-links a{font-size:14px}.band-links a.lead{padding:9px 14px}}
 @media (max-width:420px){.band-links .row{gap:8px 12px}.band-links a{font-size:13.5px}.band-links a.lead{padding:8px 12px}}
+
+/* Tutorials: text on the left, screen recording on the right */
+.tut{background:var(--ink);color:var(--white);padding:44px 0;margin-top:24px}
+.tut + .tut{margin-top:0;border-top:1px solid rgba(255,255,255,.08)}
+.tut-row{display:flex;gap:40px;align-items:center}
+.tut-text{flex:1}
+.tut h3{font-size:26px;margin:0 0 14px;letter-spacing:-.01em}
+.tut ol{margin:0;padding-left:22px}
+.tut li{margin:8px 0;color:rgba(255,255,255,.85)}
+.tut b{color:var(--lime);font-weight:700}
+.phone{position:relative;flex:0 0 260px;aspect-ratio:9/19.5;border-radius:36px;border:8px solid #2a272e;background:#000;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.phone video{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:1}
+.phone-soon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--lime);font-size:14px;font-weight:700;text-align:center;padding:20px}
+@media (max-width:700px){.tut-row{flex-direction:column}.phone{flex-basis:auto;width:240px}}
