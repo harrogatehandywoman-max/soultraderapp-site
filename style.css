@@ -79,3 +79,6 @@ body.landing{background:var(--ink);color:var(--white);min-height:100vh;display:f
 .phone video{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:1}
 .phone-soon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--lime);font-size:14px;font-weight:700;text-align:center;padding:20px}
 @media (max-width:700px){.tut-row{flex-direction:column}.phone{flex-basis:auto;width:240px}}
+.cues{list-style:none;padding-left:0 !important}
+.cues li{opacity:.35;transition:opacity .3s,color .3s;font-size:18px;line-height:1.4;margin:14px 0 !important;color:var(--white) !important}
+.cues li.on{opacity:1;color:var(--lime) !important}

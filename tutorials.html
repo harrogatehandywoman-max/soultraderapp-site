@@ -17,37 +17,34 @@
 <section class="tut" id="book-a-job"><div class="wrap tut-row">
 <div class="tut-text">
 <h3>Book a Job</h3>
-<ol>
-<li>On Home, tap <b>Book a Job or Task</b>.</li>
-<li>Type the <b>customer's name</b>, address and phone, and tick how they like to be contacted.</li>
-<li>Write the <b>first task</b> and the <b>materials needed</b>, one per line. They go on your shopping list.</li>
-<li>Tap <b>＋ Add Another Task</b> for anything else on the same visit.</li>
-<li>Pick the <b>date</b>, <b>time</b> and roughly how long it'll take.</li>
-<li>Tap <b>Book it in ✓</b>. Or <b>Save, Book Later</b> if you haven't got a date yet.</li>
-<li>The materials are already on your list: <b>Materials</b> → <b>Shopping list</b>.</li>
+<ol class="cues">
+<li data-at="0">Type their name and address. Pin where you're standing, or search the house on Maps and paste the link.</li>
+<li data-at="12.5">Tick how they contact you, so you can easily find them.</li>
+<li data-at="15.5">Describe each task and add the materials it needs. They go on your shopping list.</li>
+<li data-at="32">Book it in, or just save the job.</li>
+<li data-at="39">Your materials are here.</li>
 </ol>
 </div>
 <div class="phone"><video src="videos/book-a-job.mp4" autoplay muted loop playsinline preload="metadata"></video></div>
 </div></section>
 
-<section class="tut" id="materials"><div class="wrap tut-row">
-<div class="tut-text">
-<h3>Adding Your Materials and Markup</h3>
-<ol>
-<li>On Home, tap <b>Materials</b>.</li>
-<li>Tap <b>Set up my materials</b> (or <b>Full price list</b> once you have some).</li>
-<li>Tap <b>＋ Add item</b> and type the name.</li>
-<li>Put in <b>what you pay</b>. The customer never sees this.</li>
-<li>Pick how you charge it: <b>per item, per pack, per metre</b>.</li>
-<li>Set your <b>markup</b>, or leave it blank to use your usual one. SoulTrader works out what the customer pays.</li>
-<li>Add <b>where you buy it</b>, then <b>Save item</b>.</li>
-</ol>
-</div>
-<div class="phone"><video src="videos/materials.mp4" autoplay muted loop playsinline preload="metadata"></video><span class="phone-soon">Recording coming soon</span></div>
-</div></section>
+
 
 <div class="wrap"><p class="small" style="margin:28px 0">Want a video on something in particular? <a href="support.html">Tell me</a>.</p></div>
 </main>
 <footer><div class="wrap"><a href="privacy.html">Privacy</a><a href="support.html">Support</a><br><br>&copy; 2026 SoulTrader &middot; Made in Harrogate, UK</div></footer>
+<script>
+// Highlight the line that matches what's happening in the recording.
+document.querySelectorAll('.tut').forEach(function (sec) {
+  var v = sec.querySelector('video'); var items = sec.querySelectorAll('.cues li');
+  if (!v || !items.length) return;
+  function tick() {
+    var t = v.currentTime, on = 0;
+    items.forEach(function (li, i) { if (t >= parseFloat(li.dataset.at)) on = i; });
+    items.forEach(function (li, i) { li.classList.toggle('on', i === on); });
+  }
+  v.addEventListener('timeupdate', tick); tick();
+});
+</script>
 </body>
 </html>
