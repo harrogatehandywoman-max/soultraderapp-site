@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tutorials | SoulTrader</title>
 <meta name="description" content="SoulTrader: the simple job app for sole trader tradespeople. Book jobs, bill on the doorstep, and keep your data on your phone.">
-<link rel="stylesheet" href="style.css?v=20261118b">
+<link rel="stylesheet" href="style.css?v=20261119a">
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="index.html">Soul<span>Trader</span></a><nav><a href="index.html">Home</a><a href="whos-it-for.html">Who's it for</a><a href="tutorials.html" aria-current=page>Tutorials</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a></nav></div></header>
@@ -25,7 +25,7 @@
 <li data-at="27.6">Your materials are here.</li>
 </ol>
 </div>
-<div class="phone"><video src="videos/book-a-job.mp4?v=4" autoplay muted loop playsinline preload="metadata"></video></div>
+<div class="phone"><video data-voice src="videos/book-a-job.mp4?v=5" autoplay muted loop playsinline preload="metadata"></video></div>
 </div></section>
 
 <section class="tut" id="bill"><div class="wrap tut-row">
@@ -62,7 +62,7 @@
 <li data-at="43.9">It goes from your own email, with the quote attached as a PDF.</li>
 </ol>
 </div>
-<div class="phone"><video src="videos/quote.mp4?v=3" autoplay muted loop playsinline preload="metadata"></video></div>
+<div class="phone"><video data-voice src="videos/quote.mp4?v=4" autoplay muted loop playsinline preload="metadata"></video></div>
 </div></section>
 
 <section class="tut" id="materials"><div class="wrap tut-row">
@@ -79,7 +79,7 @@
 <li data-at="17.5">Flip the switch to see what each one costs you.</li>
 </ol>
 </div>
-<div class="phone"><video src="videos/materials.mp4?v=4" autoplay muted loop playsinline preload="metadata"></video></div>
+<div class="phone"><video data-voice src="videos/materials.mp4?v=5" autoplay muted loop playsinline preload="metadata"></video></div>
 </div></section>
 
 
@@ -98,6 +98,19 @@ document.querySelectorAll('.tut').forEach(function (sec) {
     items.forEach(function (li, i) { li.classList.toggle('on', i === on); });
   }
   v.addEventListener('timeupdate', tick); tick();
+  // Videos with a voice-over get a Sound On button. Browsers only play
+  // sound after a tap, so the videos start muted. Sound on one turns the
+  // others off, and starts that tutorial from the beginning.
+  if (!v.hasAttribute('data-voice')) return;
+  var b = document.createElement('button');
+  b.type = 'button'; b.className = 'sound'; b.textContent = '\u{1F50A} Sound On';
+  sec.querySelector('h3').after(b);
+  b.addEventListener('click', function () {
+    var turnOn = v.muted;
+    document.querySelectorAll('.tut video').forEach(function (o) { o.muted = true; });
+    document.querySelectorAll('.tut .sound').forEach(function (o) { o.textContent = '\u{1F50A} Sound On'; });
+    if (turnOn) { v.muted = false; v.currentTime = 0; v.play(); b.textContent = '\u{1F507} Sound Off'; }
+  });
 });
 </script>
 </body>
