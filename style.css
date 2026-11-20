@@ -84,3 +84,24 @@ body.landing{background:var(--ink);color:var(--white);min-height:100vh;display:f
 .cues{list-style:none;padding-left:0 !important}
 .cues li{opacity:.35;transition:opacity .3s,color .3s;font-size:18px;line-height:1.4;margin:14px 0 !important;color:var(--white) !important}
 .cues li.on{opacity:1;color:var(--lime) !important}
+
+/* Phones: tutorials side by side, swipe between them */
+.swipe{display:none}
+.tut-dots{display:none}
+@media (max-width:700px){
+.swipe{display:block;color:var(--muted);font-weight:600;font-size:15px;margin:4px 0 0}
+.tut-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 20px 4px;scroll-padding:0 20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tut-track::-webkit-scrollbar{display:none}
+.tut-track .tut,.tut-track .tut + .tut{flex:0 0 85%;scroll-snap-align:start;margin:0;border:0;border-radius:22px;padding:20px 0 22px}
+.tut .wrap{padding:0 18px}
+.tut-text{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tut h3{margin:0;font-size:22px}
+.tut-text .sound{margin:0;padding:6px 12px;font-size:13px;white-space:nowrap;flex:0 0 auto}
+.phone{max-width:none}
+.phone video{border:2px solid var(--lime);border-radius:12px;box-shadow:none}
+.tut-dots{display:block;text-align:center;margin:18px 0 0}
+.tut-dots .row{display:flex;justify-content:center;gap:10px;align-items:center}
+.tut-dots button{width:10px;height:10px;border-radius:5px;border:0;padding:0;background:#D0C9BD;cursor:pointer;transition:width .2s,background .2s}
+.tut-dots button.on{width:24px;background:var(--ink)}
+.tut-dots .label{margin-top:10px;color:var(--muted);font-weight:600;font-size:14px}
+}
