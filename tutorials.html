@@ -5,14 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tutorials | SoulTrader</title>
 <meta name="description" content="SoulTrader: the simple job app for sole trader tradespeople. Book jobs, bill on the doorstep, and keep your data on your phone.">
-<link rel="stylesheet" href="style.css?v=20261120a">
+<link rel="stylesheet" href="style.css?v=20261120b">
 </head>
 <body>
 <header><div class="wrap"><a class="logo" href="index.html">Soul<span>Trader</span></a><nav><a href="index.html">Home</a><a href="whos-it-for.html">Who's it for</a><a href="tutorials.html" aria-current=page>Tutorials</a><a href="support.html">Support</a><a href="privacy.html">Privacy</a></nav></div></header>
 
 <main class="tuts">
 <div class="wrap"><h2>Tutorials</h2>
-<p>Short screen recordings of the app, one job at a time.</p></div>
+<p>Short screen recordings of the app, one job at a time.</p>
+<p class="swipe">Swipe for more &rarr;</p></div>
+
+<div class="tut-track">
 
 <section class="tut" id="leads"><div class="wrap tut-row">
 <div class="tut-text">
@@ -100,7 +103,8 @@
 <div class="phone"><video data-voice src="videos/materials.mp4?v=6" autoplay muted loop playsinline preload="metadata"></video></div>
 </div></section>
 
-
+</div>
+<div class="tut-dots"></div>
 
 <div class="wrap"><p class="small" style="margin:28px 0">Want a video on something in particular? <a href="support.html">Tell me</a>.</p></div>
 </main>
@@ -109,6 +113,7 @@
 // On phones, play the version with each step written above the screen,
 // so the words and the recording are both in view (the list is hidden).
 var phone = window.matchMedia('(max-width:700px)').matches;
+var ON = phone ? 'Sound On' : '\u{1F50A} Sound On', OFF = phone ? 'Sound Off' : '\u{1F507} Sound Off';
 if (phone) document.querySelectorAll('.tut video').forEach(function (v) {
   v.src = v.getAttribute('src').replace('.mp4', '-m.mp4');
 });
@@ -127,15 +132,49 @@ document.querySelectorAll('.tut').forEach(function (sec) {
   // others off, and starts that tutorial from the beginning.
   if (!v.hasAttribute('data-voice')) return;
   var b = document.createElement('button');
-  b.type = 'button'; b.className = 'sound'; b.textContent = '\u{1F50A} Sound On';
+  b.type = 'button'; b.className = 'sound'; b.textContent = ON;
   sec.querySelector('h3').after(b);
   b.addEventListener('click', function () {
     var turnOn = v.muted;
     document.querySelectorAll('.tut video').forEach(function (o) { o.muted = true; });
-    document.querySelectorAll('.tut .sound').forEach(function (o) { o.textContent = '\u{1F50A} Sound On'; });
-    if (turnOn) { v.muted = false; v.currentTime = 0; v.play(); b.textContent = '\u{1F507} Sound Off'; }
+    document.querySelectorAll('.tut .sound').forEach(function (o) { o.textContent = ON; });
+    if (turnOn) { v.muted = false; v.currentTime = 0; v.play(); b.textContent = OFF; }
   });
 });
+// Phones: the tutorials sit side by side and you swipe between them.
+// Dots show which one you're on; only the one in view plays.
+if (phone) (function () {
+  var track = document.querySelector('.tut-track'), dots = document.querySelector('.tut-dots');
+  var secs = [].slice.call(track.querySelectorAll('.tut'));
+  var row = document.createElement('div'); row.className = 'row';
+  var label = document.createElement('div'); label.className = 'label';
+  dots.appendChild(row); dots.appendChild(label);
+  var ds = secs.map(function (sec, i) {
+    var d = document.createElement('button'); d.type = 'button'; d.setAttribute('aria-label', 'Tutorial ' + (i + 1));
+    d.addEventListener('click', function () { track.scrollTo({ left: sec.offsetLeft - track.offsetLeft - 20, behavior: 'smooth' }); });
+    row.appendChild(d); return d;
+  });
+  var cur = -1;
+  function show(i) {
+    if (i === cur) return; cur = i;
+    ds.forEach(function (d, k) { d.classList.toggle('on', k === i); });
+    label.textContent = (i + 1) + ' of ' + secs.length + ' \u00B7 ' + secs[i].querySelector('h3').textContent;
+    secs.forEach(function (sec, k) {
+      var v = sec.querySelector('video'); if (!v) return;
+      if (k === i) { v.play().catch(function () {}); }
+      else { v.pause(); if (!v.muted) { v.muted = true; var b = sec.querySelector('.sound'); if (b) b.textContent = ON; } }
+    });
+  }
+  function onScroll() {
+    var mid = track.scrollLeft + track.clientWidth / 2, best = 0, bd = 1e9;
+    secs.forEach(function (sec, k) {
+      var c = sec.offsetLeft - track.offsetLeft + sec.offsetWidth / 2, dd = Math.abs(c - mid);
+      if (dd < bd) { bd = dd; best = k; }
+    });
+    show(best);
+  }
+  track.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+})();
 </script>
 </body>
 </html>
