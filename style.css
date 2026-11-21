@@ -63,6 +63,7 @@ a.soon:hover{background:rgba(197,232,41,.12)}
 .badge.now{background:var(--lime);color:var(--ink)}
 .badge.test{background:var(--ink);color:var(--lime)}
 .badge.next{background:var(--cream2);color:var(--muted)}
+.badge.plan{background:transparent;color:var(--ink);border:1.5px dashed var(--ink);padding:3px 9px}
 .ask{background:var(--ink);color:var(--white);border-radius:22px;padding:24px;margin-top:28px}
 .ask h3{color:var(--white)}
 .ask p{color:#d9d6dc;margin:0 0 16px}
