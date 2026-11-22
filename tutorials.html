@@ -201,40 +201,53 @@ document.querySelectorAll('.tut').forEach(function (sec) {
     allSoundOff();
     if (turnOn) {
       sec.classList.add('voiced'); b.textContent = OFF;
-      var a = voiceFor(sec); if (a) { a.muted = true; a.play().then(function () { a.pause(); a.muted = false; }).catch(function () {}); }
+      audioCtx(); voiceFor(sec); sec._done = {}; sec._prevT = null;
       v.currentTime = 0; applySound(sec); v.play();
     }
   });
 });
 // Half Speed: the recording plays at half speed. Ben's lines still play at
 // normal speed, each starting when its step comes up, so there are just
-// bigger gaps between them. The voice is a separate sound file cut into lines.
-var rate = 1;
+// bigger gaps between them. The voice is a separate sound file cut into lines,
+// played through Web Audio (started from a tap, so phones allow it).
+var rate = 1, actx = null;
 try { rate = parseFloat(localStorage.getItem('tutRate')) || 1; } catch (e) {}
+function audioCtx() {
+  if (!actx) { var C = window.AudioContext || window.webkitAudioContext; if (C) actx = new C(); }
+  if (actx && actx.state === 'suspended') actx.resume();
+  return actx;
+}
 function voiceFor(sec) {
   var v = sec.querySelector('video'); if (!v || !v.dataset.lines) return null;
-  if (!sec._voice) {
-    sec._voice = new Audio(v.getAttribute('src').split('?')[0].replace('.mp4', '.m4a'));
-    sec._voice.preload = 'auto';
+  if (!sec._lines) {
     sec._lines = v.dataset.lines.split(';').map(function (p) { var x = p.split('-'); return [parseFloat(x[0]), parseFloat(x[1])]; });
+    // Same name as the computer video, whichever video this device plays.
+    var url = v.getAttribute('src').split('?')[0].replace(/-m\.mp4$/, '.mp4').replace(/\.mp4$/, '.m4a');
+    sec._buf = null;
+    sec._load = fetch(url).then(function (r) { return r.arrayBuffer(); }).then(function (ab) {
+      var c = audioCtx(); return new Promise(function (ok, no) { c.decodeAudioData(ab, ok, no); });
+    }).then(function (b) { sec._buf = b; }).catch(function () {});
   }
-  return sec._voice;
+  return true;
 }
+function stopVoice(sec) { if (sec._src) { try { sec._src.stop(); } catch (e) {} sec._src = null; } }
 function applySound(sec) {
-  var v = sec.querySelector('video'), a = voiceFor(sec);
+  var v = sec.querySelector('video');
   var on = sec.classList.contains('voiced');
-  v.muted = !on || (rate !== 1 && !!a);
-  if (a && (rate === 1 || !on)) a.pause();
+  var half = rate !== 1 && !!(v && v.dataset.lines);
+  v.muted = !on || half;
+  if (!on || !half) stopVoice(sec);
 }
 function allSoundOff() {
   document.querySelectorAll('.tut').forEach(function (o) {
     o.classList.remove('voiced'); var ov = o.querySelector('video'); if (ov) ov.muted = true;
-    if (o._voice) o._voice.pause();
+    stopVoice(o);
     var ob = o.querySelector('.sound'); if (ob) ob.textContent = ON;
   });
 }
 function setRate(r) {
   rate = r; try { localStorage.setItem('tutRate', String(r)); } catch (e) {}
+  if (r !== 1) audioCtx();
   document.querySelectorAll('.speed button').forEach(function (x) { x.classList.toggle('on', parseFloat(x.dataset.rate) === r); });
   document.querySelectorAll('.tut').forEach(function (sec) {
     var v = sec.querySelector('video'); if (!v) return;
@@ -249,18 +262,26 @@ document.querySelectorAll('.tut video').forEach(function (v) {
 });
 setRate(rate);
 // While a tutorial has its sound on at half speed, start each line as the
-// recording reaches it, and stop it at the end of the line.
+// recording reaches it.
 (function loop() {
   document.querySelectorAll('.tut.voiced').forEach(function (sec) {
-    var v = sec.querySelector('video'), a = sec._voice;
-    if (!a || rate === 1) return;
+    var v = sec.querySelector('video');
+    if (rate === 1 || !sec._lines) return;
     var t = v.currentTime, prev = sec._prevT == null ? t : sec._prevT; sec._prevT = t;
-    if (t < prev) { a.pause(); sec._line = null; }
+    if (t < prev) sec._done = {};
+    if (t < prev || v.paused) { stopVoice(sec); if (v.paused) return; }
+    if (!sec._buf || !actx) return;
+    sec._done = sec._done || {};
     sec._lines.forEach(function (ln, i) {
-      if (prev < ln[0] + 0.001 && t >= ln[0] && !v.paused) { a.currentTime = ln[0]; a.play().catch(function () {}); sec._line = i; }
+      // Where the voice should be: lines run at normal speed from when the
+      // half-speed recording reaches them.
+      var at = ln[0] + (t - ln[0]) / rate;
+      if (t >= ln[0] && at < ln[1] - 0.1 && !sec._done[i]) {
+        sec._done[i] = true; stopVoice(sec);
+        var s = actx.createBufferSource(); s.buffer = sec._buf; s.connect(actx.destination);
+        s.start(0, at, ln[1] - at); sec._src = s;
+      }
     });
-    if (sec._line != null && a.currentTime >= sec._lines[sec._line][1]) { a.pause(); sec._line = null; }
-    if (v.paused && !a.paused) a.pause();
   });
   requestAnimationFrame(loop);
 })();
