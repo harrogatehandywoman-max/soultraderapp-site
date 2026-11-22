@@ -109,3 +109,8 @@ a.soon:hover{background:rgba(197,232,41,.12)}
 .tut-dots button.on{width:24px;background:var(--ink)}
 .tut-dots .label{margin-top:10px;color:var(--muted);font-weight:600;font-size:14px}
 }
+
+/* Normal | Half Speed switch on the Tutorials page */
+.speed{display:inline-flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden;margin:10px 0 0}
+.speed button{border:0;background:transparent;font:inherit;font-weight:700;font-size:15px;padding:8px 16px;cursor:pointer;color:var(--ink)}
+.speed button.on{background:var(--ink);color:var(--lime)}
